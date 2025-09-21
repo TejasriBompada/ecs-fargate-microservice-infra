@@ -61,6 +61,16 @@ module "alb" {
 }
 
 # -------------------------------
+# ECR Module 
+# -------------------------------
+module "microservice_ecr" {
+  source = "./modules/ecr"
+  name                = "microservice-${var.env}"
+  lifecycle_max_images = 5
+  tags                = var.tags
+}
+
+# -------------------------------
 # Terraform Backend
 # -------------------------------
 terraform {
