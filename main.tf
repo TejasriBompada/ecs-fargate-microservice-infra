@@ -47,6 +47,20 @@ module "vpce" {
 }
 
 # -------------------------------
+# ALB Module
+# -------------------------------
+module "alb" {
+  source                     = "./modules/alb"
+  name                       = var.env
+  container_port  = var.container_port
+  vpc_id                     = module.vpc.vpc_id
+  public_subnet_ids          = module.vpc.public_subnet_ids
+  alb_sg_id                  = module.security_groups.public_sg_id
+  acm_cert_arn               = "" # leave blank for dev
+  enable_deletion_protection = false
+}
+
+# -------------------------------
 # Terraform Backend
 # -------------------------------
 terraform {

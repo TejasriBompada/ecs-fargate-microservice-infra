@@ -21,3 +21,5 @@ enable_ha_nat          = true
 # Security Groups Module
 # -------------------------------
 allowed_bastion_cidr = "REDACTED/32"  # VPN CIDR for prod
+
+container_port     = 80

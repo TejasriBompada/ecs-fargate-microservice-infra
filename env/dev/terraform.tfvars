@@ -21,3 +21,6 @@ enable_ha_nat          = false
 # Security Groups Module
 # -------------------------------
 allowed_bastion_cidr   = "REDACTED/32"  # using local IP
+
+container_port     = 80
+
