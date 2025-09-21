@@ -31,6 +31,20 @@ module "security_groups" {
   tags                 = var.tags
 }
 
+# -------------------------------
+# VPCE Module
+# -------------------------------
+
+module "vpce" {
+  source                  = "./modules/vpce"
+  vpc_id                  = module.vpc.vpc_id
+  private_subnet_ids      = module.vpc.private_subnet_ids
+  private_route_table_ids = module.vpc.private_route_table_ids   
+  vpce_sg_id              = module.security_groups.vpce_sg_id
+  region                  = var.region
+  tags                    = var.tags
+  name                    = var.env
+}
 
 # -------------------------------
 # Terraform Backend
