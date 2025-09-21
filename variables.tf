@@ -19,3 +19,12 @@ variable "enable_ha_nat" {
 variable "tags" {
   type = map(string)
 }
+
+# -------------------------------
+# Security Groups Variables
+# -------------------------------
+variable "allowed_bastion_cidr" {
+  description = "CIDR range allowed to access bastion via SSH"
+  type        = string
+}
+

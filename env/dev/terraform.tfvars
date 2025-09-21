@@ -16,3 +16,8 @@ azs                    = ["us-east-1a","us-east-1b"]
 public_subnet_newbits  = 8
 private_subnet_newbits = 8
 enable_ha_nat          = false
+
+# -------------------------------
+# Security Groups Module
+# -------------------------------
+allowed_bastion_cidr   = "REDACTED/32"  # using local IP

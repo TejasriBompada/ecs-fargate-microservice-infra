@@ -16,3 +16,8 @@ azs                    = ["us-east-1a","us-east-1b","us-east-1c"]
 public_subnet_newbits  = 4
 private_subnet_newbits = 4
 enable_ha_nat          = true
+
+# -------------------------------
+# Security Groups Module
+# -------------------------------
+allowed_bastion_cidr = "REDACTED/32"  # VPN CIDR for prod
