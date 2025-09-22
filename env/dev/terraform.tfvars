@@ -35,3 +35,16 @@ enable_autoscaling = false
 min_capacity       = 1
 max_capacity       = 3
 cpu_target_utilization = 60
+
+# -------------------------------
+# RDS Module
+# -------------------------------
+db_username = "appadmin"
+db_engine               = "postgres"
+db_engine_version       = "15.3"
+db_instance_class       = "db.t3.micro"
+db_allocated_storage    = 20
+db_max_allocated_storage = 100
+multi_az                = false
+rds_deletion_protection = false
+rds_skip_final_snapshot = true

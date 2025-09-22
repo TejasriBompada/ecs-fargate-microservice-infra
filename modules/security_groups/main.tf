@@ -64,11 +64,20 @@ resource "aws_security_group" "rds_sg" {
   description = "SG for RDS"
   vpc_id      = var.vpc_id
 
+  # ECS tasks access
   ingress {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
     security_groups = [aws_security_group.private_sg.id]
+  }
+
+  # Bastion access
+  ingress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.bastion_sg.id]
   }
 
   egress {
