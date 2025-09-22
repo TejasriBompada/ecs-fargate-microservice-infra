@@ -46,3 +46,11 @@ variable "enable_autoscaling" { default = true }
 variable "min_capacity" { default = 1 }
 variable "max_capacity" { default = 3 }
 variable "cpu_target_utilization" { default = 60 }
+
+# -------------------------------
+# Bastion Variables
+# -------------------------------
+variable "instance_type" {
+  type    = string
+  default = "t3a.nano"
+}

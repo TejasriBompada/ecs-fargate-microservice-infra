@@ -84,16 +84,10 @@ resource "aws_security_group" "rds_sg" {
 # Bastion SG
 resource "aws_security_group" "bastion_sg" {
   name        = "${var.env}-bastion-sg"
-  description = "Bastion host SG"
+  description = "Bastion host SG (SSM-only)"
   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.allowed_bastion_cidr]
-  }
-
+  # No inbound needed - using SSM
   egress {
     from_port   = 0
     to_port     = 0

@@ -97,6 +97,20 @@ module "ecs" {
 }
 
 # -------------------------------
+# Bastion Module 
+# -------------------------------
+
+module "bastion" {
+  source        = "./modules/bastion"
+  name          = "${var.env}-bastion"
+  env           = var.env
+  subnet_id     = module.vpc.private_subnet_ids[0]
+  bastion_sg_id = module.security_groups.bastion_sg_id
+  instance_type = var.instance_type
+  tags          = var.tags
+}
+
+# -------------------------------
 # Terraform Backend
 # -------------------------------
 terraform {
