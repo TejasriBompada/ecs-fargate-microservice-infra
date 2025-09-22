@@ -27,6 +27,7 @@ module "security_groups" {
   source               = "./modules/security_groups"
   env                  = var.env
   vpc_id               = module.vpc.vpc_id
+  container_port       = var.container_port
   allowed_bastion_cidr = var.allowed_bastion_cidr
   tags                 = var.tags
 }

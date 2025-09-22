@@ -18,3 +18,5 @@ variable "allowed_bastion_cidr" {
   description = "CIDR range allowed to SSH into bastion host"
   type        = string
 }
+
+variable "container_port" {}

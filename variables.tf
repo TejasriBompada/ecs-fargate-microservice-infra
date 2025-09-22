@@ -33,7 +33,7 @@ variable "allowed_bastion_cidr" {
 # -------------------------------
 variable "app_name" {}
 variable "container_image" {}
-variable "container_port" { default = 80 }
+variable "container_port" {}
 variable "cpu" { default = 256 }
 variable "memory" { default = 512 }
 

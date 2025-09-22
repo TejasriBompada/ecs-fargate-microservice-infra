@@ -1,4 +1,4 @@
-    resource "aws_ecs_task_definition" "this" {
+resource "aws_ecs_task_definition" "this" {
   family                   = "${var.app_name}-${var.env}-task"
   cpu                      = var.cpu
   memory                   = var.memory
@@ -21,6 +21,7 @@
           protocol      = "tcp"
         }
       ]
+      command = ["-text", "Hello from ECS!"]  
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -31,4 +32,10 @@
       }
     }
   ])
+}
+
+resource "aws_cloudwatch_log_group" "ecs_tasks" {
+  name              = "/ecs/${var.app_name}-${var.env}"
+  retention_in_days = 7
+  tags              = var.tags
 }

@@ -26,8 +26,8 @@ allowed_bastion_cidr = "REDACTED/32"  # VPN CIDR for prod
 # ECS Module
 # -------------------------------
 app_name           = "microservice"
-container_image    = "public.ecr.aws/nginx/nginx:latest"
-container_port     = 80
+container_image    = "hashicorp/http-echo:0.2.3"
+container_port     = 5678
 cpu                = 256
 memory             = 512
 desired_count      = 3
