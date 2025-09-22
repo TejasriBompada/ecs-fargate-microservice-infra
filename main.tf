@@ -71,6 +71,32 @@ module "microservice_ecr" {
 }
 
 # -------------------------------
+# ECS Module
+# -------------------------------
+module "ecs" {
+  source             = "./modules/ecs"
+  env                = var.env
+  app_name           = var.app_name
+  subnet_ids         = module.vpc.private_subnet_ids
+  security_group_ids = [module.security_groups.private_sg_id]
+
+  container_image    = var.container_image
+  container_name     = "${var.app_name}-${var.env}"
+  container_port     = var.container_port
+  cpu                = var.cpu
+  memory             = var.memory
+
+  desired_count         = var.desired_count
+  enable_autoscaling    = var.enable_autoscaling
+  min_capacity          = var.min_capacity
+  max_capacity          = var.max_capacity
+  cpu_target_utilization = var.cpu_target_utilization
+  alb_target_group_arn  = module.alb.target_group_arn
+
+  depends_on = [module.alb]
+}
+
+# -------------------------------
 # Terraform Backend
 # -------------------------------
 terraform {
