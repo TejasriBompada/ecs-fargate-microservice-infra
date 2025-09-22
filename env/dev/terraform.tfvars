@@ -22,5 +22,16 @@ enable_ha_nat          = false
 # -------------------------------
 allowed_bastion_cidr   = "REDACTED/32"  # using local IP
 
+# -------------------------------
+# ECS Module
+# -------------------------------
+app_name           = "microservice"
+container_image    = "public.ecr.aws/nginx/nginx:latest"
 container_port     = 80
-
+cpu                = 256
+memory             = 512
+desired_count      = 1
+enable_autoscaling = false
+min_capacity       = 1
+max_capacity       = 3
+cpu_target_utilization = 60

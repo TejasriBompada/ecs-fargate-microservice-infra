@@ -22,4 +22,16 @@ enable_ha_nat          = true
 # -------------------------------
 allowed_bastion_cidr = "REDACTED/32"  # VPN CIDR for prod
 
+# -------------------------------
+# ECS Module
+# -------------------------------
+app_name           = "microservice"
+container_image    = "public.ecr.aws/nginx/nginx:latest"
 container_port     = 80
+cpu                = 256
+memory             = 512
+desired_count      = 3
+enable_autoscaling = true
+min_capacity       = 2
+max_capacity       = 6
+cpu_target_utilization = 60
