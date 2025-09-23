@@ -25,6 +25,11 @@ resource "aws_lb_target_group" "this" {
   }
 }
 
+# NOTE: Temporary for assessment/dev.
+# HTTP listener is enabled only for redirect testing.
+# Will be removed once ACM cert is in place.
+# tfsec reports CRITICAL here – acknowledged and accepted for now.
+
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.this.arn
   port              = 80
@@ -36,7 +41,9 @@ resource "aws_lb_listener" "http" {
   }
 }
 
-# Optional: HTTPS Listener (only if ACM cert ARN passed in)
+# HTTPS listener (enabled only if ACM certificate ARN is provided).
+# In prod, HTTPS will be the default and HTTP will be disabled/redirected.
+
 resource "aws_lb_listener" "https" {
   count             = var.acm_cert_arn == "" ? 0 : 1
   load_balancer_arn = aws_lb.this.arn
