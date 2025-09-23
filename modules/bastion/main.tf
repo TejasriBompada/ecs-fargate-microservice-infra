@@ -9,9 +9,9 @@ resource "aws_iam_role" "ssm_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
+      Effect    = "Allow"
       Principal = { Service = "ec2.amazonaws.com" }
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
@@ -22,7 +22,7 @@ resource "aws_iam_role_policy_attachment" "ssm_core" {
 }
 
 resource "aws_iam_instance_profile" "profile" {
-  name = "${local.name}-ip-${substr(uuid(),0,8)}"
+  name = "${local.name}-ip-${substr(uuid(), 0, 8)}"
   role = aws_iam_role.ssm_role.name
 }
 
@@ -46,12 +46,12 @@ data "aws_ami" "ubuntu" {
 
 # Bastion EC2
 resource "aws_instance" "bastion" {
-  ami                    = var.ami_id != "" ? var.ami_id : data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
-  subnet_id              = var.subnet_id
-  vpc_security_group_ids = [var.bastion_sg_id]
-  iam_instance_profile   = aws_iam_instance_profile.profile.name
-  associate_public_ip_address = false  # always private
+  ami                         = var.ami_id != "" ? var.ami_id : data.aws_ami.ubuntu.id
+  instance_type               = var.instance_type
+  subnet_id                   = var.subnet_id
+  vpc_security_group_ids      = [var.bastion_sg_id]
+  iam_instance_profile        = aws_iam_instance_profile.profile.name
+  associate_public_ip_address = false # always private
 
   user_data = templatefile("${path.module}/userdata.sh.tpl", {})
 

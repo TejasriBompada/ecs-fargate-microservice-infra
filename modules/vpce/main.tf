@@ -1,10 +1,10 @@
 # ECR Interface Endpoint for API
 resource "aws_vpc_endpoint" "ecr_api" {
-  vpc_id             = var.vpc_id
-  service_name       = "com.amazonaws.${var.region}.ecr.api"
-  vpc_endpoint_type  = "Interface"
-  subnet_ids         = var.private_subnet_ids
-  security_group_ids = [var.vpce_sg_id]
+  vpc_id              = var.vpc_id
+  service_name        = "com.amazonaws.${var.region}.ecr.api"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = var.private_subnet_ids
+  security_group_ids  = [var.vpce_sg_id]
   private_dns_enabled = true
 
   tags = merge(var.tags, { Name = "${var.name}-vpce-ecr-api" })
@@ -12,11 +12,11 @@ resource "aws_vpc_endpoint" "ecr_api" {
 
 # ECR Interface Endpoint for DKR
 resource "aws_vpc_endpoint" "ecr_dkr" {
-  vpc_id             = var.vpc_id
-  service_name       = "com.amazonaws.${var.region}.ecr.dkr"
-  vpc_endpoint_type  = "Interface"
-  subnet_ids         = var.private_subnet_ids
-  security_group_ids = [var.vpce_sg_id]
+  vpc_id              = var.vpc_id
+  service_name        = "com.amazonaws.${var.region}.ecr.dkr"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = var.private_subnet_ids
+  security_group_ids  = [var.vpce_sg_id]
   private_dns_enabled = true
 
   tags = merge(var.tags, { Name = "${var.name}-vpce-ecr-dkr" })

@@ -29,18 +29,18 @@ variable "container_name" {
 }
 
 variable "container_port" {
-  type        = number
-  default     = 80
+  type    = number
+  default = 80
 }
 
 variable "cpu" {
-  type        = number
-  default     = 256
+  type    = number
+  default = 256
 }
 
 variable "memory" {
-  type        = number
-  default     = 512
+  type    = number
+  default = 512
 }
 
 variable "security_group_ids" {
@@ -88,5 +88,5 @@ variable "tags" {
 variable "alb_target_group_arn" {
   description = "Target Group ARN to register ECS service with ALB"
   type        = string
-  default     = ""  # optional, allows ECS without ALB
+  default     = "" # optional, allows ECS without ALB
 }

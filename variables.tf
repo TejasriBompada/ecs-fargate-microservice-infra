@@ -68,12 +68,12 @@ variable "db_password" {
   description = "Master password (optional, only for overriding generated password)"
   type        = string
   sensitive   = true
-  nullable    = true    # allow null
+  nullable    = true # allow null
   default     = null
 }
 
 variable "multi_az" {
-  type = bool
+  type    = bool
   default = false
 }
 

@@ -8,7 +8,7 @@ resource "aws_security_group" "public_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # ALB public
+    cidr_blocks = ["0.0.0.0/0"] # ALB public
   }
 
   ingress {
@@ -114,11 +114,11 @@ resource "aws_security_group" "vpce_sg" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description      = "HTTPS from ECS private SG"
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    security_groups  = [aws_security_group.private_sg.id]
+    description     = "HTTPS from ECS private SG"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.private_sg.id]
   }
 
   egress {

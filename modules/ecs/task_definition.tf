@@ -21,7 +21,7 @@ resource "aws_ecs_task_definition" "this" {
           protocol      = "tcp"
         }
       ]
-      command = ["-text", "Hello from ECS!"]  
+      command = ["-text", "Hello from ECS!"]
       logConfiguration = {
         logDriver = "awslogs"
         options = {

@@ -3,7 +3,7 @@ resource "random_password" "db_password" {
   special          = true
   override_special = "!#$%&*"
   keepers = {
-    rds_instance = var.name  # only regenerates if this changes
+    rds_instance = var.name # only regenerates if this changes
   }
 }
 
@@ -14,7 +14,7 @@ resource "aws_secretsmanager_secret" "rds" {
 }
 
 resource "aws_secretsmanager_secret_version" "rds" {
-  secret_id     = aws_secretsmanager_secret.rds.id
+  secret_id = aws_secretsmanager_secret.rds.id
   secret_string = jsonencode({
     username = var.db_username
     password = random_password.db_password.result

@@ -15,5 +15,5 @@ output "bastion_sg_id" {
 }
 
 output "vpce_sg_id" {
-  value       = aws_security_group.vpce_sg.id
+  value = aws_security_group.vpce_sg.id
 }
