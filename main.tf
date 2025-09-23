@@ -36,16 +36,17 @@ module "security_groups" {
 # VPCE Module
 # -------------------------------
 
-module "vpce" {
-  source                  = "./modules/vpce"
-  vpc_id                  = module.vpc.vpc_id
-  private_subnet_ids      = module.vpc.private_subnet_ids
-  private_route_table_ids = module.vpc.private_route_table_ids
-  vpce_sg_id              = module.security_groups.vpce_sg_id
-  region                  = var.region
-  tags                    = var.tags
-  name                    = var.env
-}
+# module "vpce" {
+#   source                  = "./modules/vpce"
+#   vpc_id                  = module.vpc.vpc_id
+#   private_subnet_ids      = module.vpc.private_subnet_ids
+#   private_route_table_ids = module.vpc.private_route_table_ids
+#   vpce_sg_id              = module.security_groups.vpce_sg_id
+#   region                  = var.region
+#   tags                    = var.tags
+#   name                    = var.env
+# }
+
 
 # -------------------------------
 # ALB Module
@@ -64,12 +65,12 @@ module "alb" {
 # -------------------------------
 # ECR Module 
 # -------------------------------
-module "microservice_ecr" {
-  source               = "./modules/ecr"
-  name                 = "microservice-${var.env}"
-  lifecycle_max_images = 5
-  tags                 = var.tags
-}
+# module "microservice_ecr" {
+#   source = "./modules/ecr"
+#   name                = "microservice-${var.env}"
+#   lifecycle_max_images = 5
+#   tags                = var.tags
+# }
 
 # -------------------------------
 # ECS Module
@@ -115,26 +116,26 @@ module "bastion" {
 # RDS Module 
 # -------------------------------
 
-module "rds" {
-  source             = "./modules/rds"
-  name               = var.env
-  vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnet_ids
-  rds_sg_id          = module.security_groups.rds_sg_id
+# module "rds" {
+#   source             = "./modules/rds"
+#   name               = var.env
+#   vpc_id             = module.vpc.vpc_id
+#   private_subnet_ids = module.vpc.private_subnet_ids
+#   rds_sg_id          = module.security_groups.rds_sg_id
 
-  # Credentials & settings
-  db_username           = var.db_username
-  engine                = var.db_engine
-  engine_version        = var.db_engine_version
-  instance_class        = var.db_instance_class
-  allocated_storage     = var.db_allocated_storage
-  max_allocated_storage = var.db_max_allocated_storage
-  deletion_protection   = var.rds_deletion_protection
-  skip_final_snapshot   = var.rds_skip_final_snapshot
-  multi_az              = var.multi_az
+#   # Credentials & settings
+#   db_username           = var.db_username
+#   engine                = var.db_engine
+#   engine_version        = var.db_engine_version
+#   instance_class        = var.db_instance_class
+#   allocated_storage     = var.db_allocated_storage
+#   max_allocated_storage = var.db_max_allocated_storage
+#   deletion_protection   = var.rds_deletion_protection
+#   skip_final_snapshot   = var.rds_skip_final_snapshot
+#   multi_az              = var.multi_az
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
 # -------------------------------
 # Terraform Backend
