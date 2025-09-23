@@ -20,7 +20,7 @@ enable_ha_nat          = false
 # -------------------------------
 # Security Groups Module
 # -------------------------------
-allowed_bastion_cidr = "REDACTED/32" # using local IP
+allowed_bastion_cidr = "173.32.28.31/32" # using local IP for dev
 
 # -------------------------------
 # ECS Module
@@ -41,7 +41,7 @@ cpu_target_utilization = 60
 # -------------------------------
 db_username              = "appadmin"
 db_engine                = "postgres"
-db_engine_version        = "15.3"
+db_engine_version        = "15.7"
 db_instance_class        = "db.t3.micro"
 db_allocated_storage     = 20
 db_max_allocated_storage = 100
