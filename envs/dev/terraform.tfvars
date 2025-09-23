@@ -20,7 +20,7 @@ enable_ha_nat          = false
 # -------------------------------
 # Security Groups Module
 # -------------------------------
-allowed_bastion_cidr = "173.32.28.31/32" # using local IP for dev
+allowed_bastion_cidr = "173.32.28.31/32" # using local IP for dev workflow, this IP has been reset after testing
 
 # -------------------------------
 # ECS Module
