@@ -1,0 +1,131 @@
+name: Terraform PR Validation & Plan
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment to deploy (dev/prod)"
+        required: true
+        default: "dev"
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  
+jobs:
+  validate-and-plan:
+    name: Validate & Plan
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.env || 'dev' }}
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-1
+      TF_ENV: ${{ github.event.inputs.env || 'dev' }}
+    steps:
+      # ---------------------------
+      # Checkout & Setup
+      # ---------------------------
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      # ---------------------------
+      # Terraform Init
+      # ---------------------------
+      - name: Terraform Init
+        run: terraform init -backend-config="envs/${TF_ENV}/backend.conf" -reconfigure
+
+      # ---------------------------
+      # Quality Gates
+      # ---------------------------
+      - name: Terraform Format Check
+        run: |
+          echo "Checking Terraform formatting..."
+          if ! terraform fmt -check -recursive; then
+            echo "::error ::Terraform files are not formatted correctly!"
+            echo "::warning ::Run 'terraform fmt -recursive' locally to fix formatting before committing."
+            exit 1
+          fi
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: TFLint Linting
+        uses: terraform-linters/setup-tflint@v4
+      - run: tflint --recursive || true
+
+      # ---------------------------
+      # Install tfsec
+      # ---------------------------
+      - name: Install tfsec
+        run: |
+          TFSEC_VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/tfsec/releases/latest" \
+            | grep '"tag_name":' \
+            | sed -E 's/.*"([^"]+)".*/\1/')
+          curl -L "https://github.com/aquasecurity/tfsec/releases/download/${TFSEC_VERSION}/tfsec-linux-amd64" -o tfsec
+          chmod +x tfsec
+          sudo mv tfsec /usr/local/bin/
+
+      # ---------------------------
+      # Static Security Scan (tfsec)
+      # ---------------------------
+      - name: Static Security Scan (tfsec)
+        run: |
+          # Only report CRITICAL issues, concise output, no color, write directly to file
+          tfsec --minimum-severity CRITICAL --concise-output --no-color --out tfsec_report.txt || true
+
+      - name: Upload tfsec artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfsec-report
+          path: tfsec_report.txt
+
+      # ---------------------------
+      # Static Analysis (Checkov)
+      # ---------------------------
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Static Analysis (Checkov)
+        run: |
+          # Only show resources with violations, quiet mode, write to file, do not fail pipeline
+          checkov -d . --quiet --skip-resources-without-violations > checkov_report.txt 2>&1 || true
+
+      - name: Upload Checkov artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkov-report
+          path: checkov_report.txt
+
+      # ---------------------------
+      # Backend Config
+      # ---------------------------
+      - name: Select Backend Config
+        run: |
+          BACKEND_FILE="envs/${TF_ENV}/backend.conf"
+          echo "Using backend config: $BACKEND_FILE"
+
+      # ---------------------------
+      # Terraform Plan
+      # ---------------------------
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -var-file="envs/${TF_ENV}/terraform.tfvars" -out=tfplan
+          terraform show -no-color tfplan > plan.txt
+
+      # ---------------------------
+      # Post Plan Output to PR
+      # ---------------------------
+      # - name: Comment Plan on PR
+      #   if: github.event_name == 'pull_request'
+      #   uses: marocchino/sticky-pull-request-comment@v2
+      #   with:
+      #     path: plan.txt
+      #   permissions:
+      #     pull-requests: write
